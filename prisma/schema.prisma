@@ -1,0 +1,196 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id_usuario    Int    @id @default(autoincrement())
+  nome_usuario  String @db.VarChar(50)
+  username      String @unique @db.VarChar(50)
+  password      String
+}
+
+model Acolhido {
+  id_acolhido          Int     @id @default(autoincrement())
+  nome_acolhido        String  @db.VarChar(50)
+  cidade_natural       String  @db.VarChar(50)
+  estado_natural       String  @db.VarChar(50)
+  cidade_origem        String  @db.VarChar(50)
+  estado_origem        String  @db.VarChar(50)
+  cpf_acolhido         String  @unique @db.VarChar(20)
+  rg_acolhido          String  @unique @db.VarChar(20)
+  orgao_expedidor_rg   String  @db.VarChar(50)
+  data_nascimento      String  @db.VarChar(11)
+  declaracao_racial    String  @db.VarChar(50)
+  filiacao_pai         String  @db.VarChar(50)
+  filiacao_mae         String  @db.VarChar(50)
+  endereco_familiar    String  @db.VarChar(50)
+  telefone             String  @db.VarChar(50)
+  whatsapp             String  @db.VarChar(50)
+  escolaridade_acolhido String @db.VarChar(50)
+  profissao_acolhido   String  @db.VarChar(50)
+  estado_civil_acolhido String @db.VarChar(50)
+  apoio_familiar       Boolean
+  contato_familiar     String  @db.VarChar(50)
+  filhos_acolhido      Int
+  religiao_acolhido    String  @db.VarChar(50)
+
+  filho                AcolhidoFilho[]
+  saude                DadosSaude[]
+  social               EstadoSocial[]
+  medicamento          Medicamento[]
+  substancia           Substancia[]
+  termoalta            TermoAlta[]
+  termoguarda          TermoGuarda[]
+  termoresponsabilidade TermoResponsabilidade[]
+  vidajuridica         VidaJuridica[]
+}
+
+model AcolhidoFilho {
+  id_acolhido_filho    Int     @id @default(autoincrement())
+  nome_filho           String  @db.VarChar(50)
+  paga_pensao          Boolean
+  id_acolhido          Int     @db.Integer
+
+
+  acolhido             Acolhido @relation(fields: [id_acolhido], references: [id_acolhido])
+
+  @@index([id_acolhido])
+}
+
+model DadosSaude {
+  id_dados_saude            Int     @id @default(autoincrement())
+  tratamento_psiquiatrico   Boolean
+  local_tratamento          String  @db.VarChar(50)
+  lesao_fisica              Boolean
+  local_lesao_fisica        String  @db.VarChar(255)
+  doenca_respiratoria       Boolean
+  nome_doenca_respiratoria  String  @db.VarChar(50)
+  alergia_alimentar         Boolean
+  nome_alimento             String  @db.VarChar(50)
+  alergia_medicamentos      Boolean
+  nome_alergia_medicamento  String  @db.VarChar(50)
+  outras_doencas            String  @db.VarChar(50)
+  tentativa_suicidio        Boolean
+  automutilacao             Boolean
+  historico_cancer          String  @db.VarChar(50)
+  tipo_cancer               String  @db.VarChar(50)
+  id_acolhido               Int
+
+  acolhido                  Acolhido @relation(fields: [id_acolhido], references: [id_acolhido])
+
+  @@index([id_acolhido])
+}
+
+model EstadoSocial {
+  id_estado_social         Int     @id @default(autoincrement())
+  situacao_rua             Boolean
+  tempo_rua                String  @db.VarChar(50)
+  motivo_rua               String  @db.VarChar(255)
+  chegada_missao_vida      String  @db.VarChar(255)
+  sentimentos              String  @db.VarChar(50)
+  objetivos                String  @db.VarChar(50)
+  outros_centros           Boolean
+  nome_outros_centros      String  @db.VarChar(50)
+  tempo_outros_centros     String  @db.VarChar(50)
+  motivo_saida_outros_centros String @db.VarChar(50)
+  id_acolhido              Int
+
+  acolhido                 Acolhido @relation(fields: [id_acolhido], references: [id_acolhido])
+
+  @@index([id_acolhido])
+}
+
+model Medicamento {
+  id_medicamento         Int     @id @default(autoincrement())
+  medicamento_psicotropico Boolean
+  nome_medicamento       String  @db.VarChar(50)
+  motivo_uso             String  @db.VarChar(255)
+  id_acolhido            Int
+
+  acolhido               Acolhido @relation(fields: [id_acolhido], references: [id_acolhido])
+
+  @@index([id_acolhido])
+}
+
+model Substancia {
+  id_substancia         Int     @id @default(autoincrement())
+  uso_alcool            Boolean
+  idade_alcool          Int
+  motivo_alcool         String  @db.VarChar(50)
+  uso_tabaco            Boolean
+  idade_tabaco          Int
+  motivo_tabaco         String  @db.VarChar(255)
+  outras_drogas         String  @db.VarChar(50)
+  motivo_outras_drogas  String  @db.VarChar(50)
+  principal_substancia  String  @db.VarChar(50)
+  id_acolhido           Int
+
+  acolhido              Acolhido @relation(fields: [id_acolhido], references: [id_acolhido])
+
+  @@index([id_acolhido])
+}
+
+model TermoAlta {
+  id_termo_alta   Int    @id @default(autoincrement())
+  pdf_termo_alta  Bytes?
+  id_acolhido     Int
+
+  acolhido        Acolhido @relation(fields: [id_acolhido], references: [id_acolhido])
+
+  @@index([id_acolhido])
+}
+
+model TermoGuarda {
+  id_termo_guarda    Int     @id @default(autoincrement())
+  autorizacao_guarda Boolean
+  documentos_guardados String  @db.VarChar(50)
+  descricao_carteira String  @db.VarChar(255)
+  recurso_especie    Decimal @db.Decimal(10, 2)
+  aparelho_celular   String  @db.VarChar(50)
+  outros_objetos     String  @db.VarChar(50)
+  id_acolhido        Int
+
+  acolhido           Acolhido @relation(fields: [id_acolhido], references: [id_acolhido])
+
+  @@index([id_acolhido])
+}
+
+model TermoResponsabilidade {
+  id_termo_responsabilidade  Int    @id @default(autoincrement())
+  pdf_termo_responsabilidade Bytes?
+  id_acolhido                Int
+
+  acolhido                   Acolhido @relation(fields: [id_acolhido], references: [id_acolhido])
+
+  @@index([id_acolhido])
+}
+
+model VidaJuridica {
+  id_vida_juridica     Int      @id @default(autoincrement())
+  historico_prisao     Boolean
+  motivo_prisao        String   @db.VarChar(50)
+  processos            Boolean
+  cidade_processo      String   @db.VarChar(255)
+  estado_processo      String   @db.VarChar(50)
+  uso_tornozeleira     Boolean
+  informou_central     Boolean
+  cumpriu_pena         Boolean
+  situacao_legal       Boolean
+  motivo_situacao_legal String  @db.VarChar(50)
+  id_acolhido          Int
+
+  acolhido             Acolhido @relation(fields: [id_acolhido], references: [id_acolhido])
+
+  @@index([id_acolhido])
+}
