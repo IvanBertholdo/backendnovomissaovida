@@ -1,6 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const Fastify = require('fastify');
+import Fastify from 'fastify'
 const fastifycors = require('@fastify/cors');
 const swagger = require('@fastify/swagger');
 const swaggerui = require('@fastify/swagger-ui');
@@ -12,7 +12,9 @@ const openApiDocs = require('./openAPI')
 const strongPassword = require('./passwordUtils');
 
 
-const app = Fastify({ logger: true })
+const app = Fastify({ 
+  logger: true 
+})
 const PORT = process.env.PORT || 3333
 
 app.register(fastifycors);
