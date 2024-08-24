@@ -17,7 +17,7 @@ const app = Fastify({
 })
 const PORT = process.env.PORT || 3333
 
-app.register(cors);
+await app.register(cors);
 app.register(fastifyJwt, {
   secret: strongPassword
 })
