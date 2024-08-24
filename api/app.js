@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 import Fastify from 'fastify'
-const fastifycors = require('@fastify/cors');
+import cors from '@fastify/cors'
 const swagger = require('@fastify/swagger');
 const swaggerui = require('@fastify/swagger-ui');
 const fastifyJwt = require('@fastify/jwt');
@@ -17,7 +17,7 @@ const app = Fastify({
 })
 const PORT = process.env.PORT || 3333
 
-app.register(fastifycors);
+app.register(cors);
 app.register(fastifyJwt, {
   secret: strongPassword
 })
