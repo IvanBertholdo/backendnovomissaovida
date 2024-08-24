@@ -7,7 +7,7 @@
     ],
     "headers": [
     {
-      "source": "/api/index.js",
+      "source": "/api/app.js",
       "headers": [
         { "key": "Access-Control-Allow-Credentials", "value": "true" },
         { "key": "Access-Control-Allow-Origin", "value": "*" },
