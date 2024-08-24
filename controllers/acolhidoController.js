@@ -164,7 +164,7 @@ const createAcolhido = async (req, reply) => {
 const updateAcolhido = async (req, reply) => {
     const { nome_acolhido, cidade_natural, estado_natural, cidade_origem, estado_origem, cpf_acolhido, rg_acolhido, orgao_expedidor_rg, data_nascimento, declaracao_racial, filiacao_pai, filiacao_mae, endereco_familiar, telefone, whatsapp, escolaridade_acolhido, profissao_acolhido, estado_civil_acolhido, apoio_familiar, contato_familiar, filhos_acolhido, religiao_acolhido, acolhidoFilhos, dados_saude, medicamento, vida_juridica, substancia, estado_social, termo_guarda, termo_responsabilidade, termo_alta } = req.body;
 
-    const transaction = await prisma.$transaction()
+    //const transaction = await prisma.$transaction()
     try {
         await prisma.acolhido.update({
             where: { rg_acolhido },
@@ -324,11 +324,11 @@ const updateAcolhido = async (req, reply) => {
             }
         });
 
-        await transaction.commit();
+        //await transaction.commit();
         console.log("Acolhido Atualizado");
         return reply.status(200).send({ message: 'Acolhido atualizado!' });
     } catch (error) {
-        await transaction.rollback();
+        //await transaction.rollback();
         return reply.status(400).send(error);
     }
 };
